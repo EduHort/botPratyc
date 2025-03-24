@@ -1,89 +1,134 @@
-Guia de Instalação e Uso (Windows)
+# 🤖 botPraticc - Guia de Instalação e Uso (Windows) 🚀
 
-Este guia explica como configurar e rodar o projeto no Windows, utilizando Node.js, npm e PM2.
+Este guia detalha como configurar e executar o projeto `botPraticc` no Windows, utilizando Node.js, npm e PM2 para gerenciamento.
 
-1. Verificar se Node.js e npm estão instalados
+## 📌 Pré-requisitos
 
-Abra o Prompt de Comando (cmd) e digite:
+Antes de começar, certifique-se de ter os seguintes itens instalados:
 
-node -v
-npm -v
+*   **Node.js e npm:** Essenciais para rodar projetos JavaScript.
 
-Se ambos os comandos retornarem uma versão, significa que já estão instalados. Caso contrário, baixe e instale o Node.js pelo site oficial: https://nodejs.org/. O npm é instalado automaticamente com o Node.js.
+## ⚙️ Passo 1: Verificação da Instalação
 
-2. Clonar o repositório e instalar dependências
+1.  Abra o Prompt de Comando (cmd).
+2.  Execute os seguintes comandos para verificar as versões:
 
-Crie uma nova pasta e abra o terminal nela. Em seguida, execute os comandos:
+    ```bash
+    node -v
+    npm -v
+    ```
 
-git clone https://github.com/EduHort/botPraticc.git
-cd botPraticc
-npm install
+    *   Se ambos os comandos retornarem números de versão, o Node.js e o npm já estão instalados. 🎉
+    *   Caso contrário, baixe e instale o Node.js no [site oficial](https://nodejs.org/). O npm é instalado automaticamente com o Node.js.
 
-3. Instalação e uso do PM2
+## ⬇️ Passo 2: Clonagem do Repositório e Instalação das Dependências
 
-Instale o PM2 globalmente:
+1.  Crie uma nova pasta para o projeto (opcional, mas recomendado).
+2.  Abra o terminal (cmd ou PowerShell) dentro da pasta.
+3.  Clone o repositório:
 
-npm install -g pm2
+    ```bash
+    git clone https://github.com/EduHort/botPraticc.git
+    cd botPraticc
+    ```
 
-Comandos básicos do PM2:
+4.  Instale as dependências do projeto:
 
-pm2 start --name "meuProjeto"                # Iniciar o projeto com um nome personalizado
-pm2 stop MeuProjeto                          # Parar a instância
-pm2 restart MeuProjeto                       # Reiniciar a instância
-pm2 logs MeuProjeto                          # Ver logs
-pm2 monit                                    # Monitoramento em tempo real
+    ```bash
+    npm install
+    ```
 
-Para iniciar o projeto automaticamente após reiniciar o PC (OPCIONAL):
+## 📦 Passo 3: Instalação e Uso do PM2
 
-pm2 startup
-pm2 save
+O PM2 é um gerenciador de processos que mantém seu bot rodando em segundo plano.
 
-4. Compilar e iniciar o projeto em TypeScript
+1.  Instale o PM2 globalmente:
 
-Antes de rodar o projeto, é necessário compilá-lo para JavaScript:
+    ```bash
+    npm install -g pm2
+    ```
 
-npm run build
+2.  **Comandos Essenciais do PM2:**
 
-Isso gerará os arquivos compilados. Agora, inicie o projeto com PM2:
+    *   `pm2 start <arquivo.js> --name "nomeDoProjeto"`: Inicia o projeto com um nome personalizado (ex: `pm2 start index.js --name "botPraticc"`).
+    *   `pm2 stop nomeDoProjeto`: Para a instância do projeto.
+    *   `pm2 restart nomeDoProjeto`: Reinicia a instância do projeto.
+    *   `pm2 logs nomeDoProjeto`: Exibe os logs do projeto para monitoramento e debugging.
+    *   `pm2 monit`: Abre uma interface de monitoramento em tempo real.
 
-pm2 start index.js --name "meuProjeto"
-pm2 logs meuProjeto
+3.  **Inicialização Automática (Opcional):** Para que o projeto inicie automaticamente após reiniciar o PC:
 
-Verifique o QR-code do WhatsApp nos logs. Caso a autenticação falhe:
+    ```bash
+    pm2 startup
+    pm2 save
+    ```
 
-Exclua as pastas .wwebjs_cache e .wwebjs_auth.
+    Siga as instruções que o `pm2 startup` exibir no seu terminal.
 
-pm2 stop meuProjeto
-rm -rf .wwebjs_cache .wwebjs_auth
+## 🔨 Passo 4: Compilação e Execução do Projeto
 
-Reinicie o projeto e tente novamente.
+1.  Compile o código TypeScript para JavaScript:
 
-npm run build
-pm2 start index.js --name "meuProjeto"
-pm2 logs meuProjeto
+    ```bash
+    npm run build
+    ```
 
-5. Manipulação do arquivo Excel
+2.  Inicie o projeto com PM2:
 
-O projeto gera um arquivo Excel "respostas" na raiz da pasta com as respostas. Não abra esse arquivo diretamente na pasta do projeto, pois isso pode impedir o funcionamento do sistema. Se precisar visualizar os dados:
+    ```bash
+    pm2 start index.js --name "botPraticc"
+    pm2 logs botPraticc
+    ```
 
-Copie o arquivo para outro local.
+3.  **Autenticação do WhatsApp:** Verifique o QR code no pm2 logs para autenticar o WhatsApp. Se a autenticação falhar:
 
-Abra a cópia.
+    *   Exclua as pastas de cache e autenticação:
 
-6. Atualização do projeto com Git
+        ```bash
+        pm2 stop botPraticc
+        rmdir .wwebjs_cache /s /q
+        rmdir .wwebjs_auth /s /q
+        ```
 
-Antes de atualizar o código, pare a execução do projeto com:
+    *   Reinicie o projeto:
 
-pm2 stop meuProjeto
+        ```bash
+        npm run build
+        pm2 start index.js --name "botPraticc"
+        pm2 logs botPraticc
+        ```
 
-Em seguida, atualize o repositório:
+## 📊 Passo 5: Manipulação do Arquivo Excel
 
-git pull origin main
-npm install
-npm run build
+O projeto gera um arquivo Excel (geralmente chamado `respostas.xlsx`) na raiz da pasta. **Importante:**
 
-Depois, reinicie o projeto normalmente:
+*   **Não abra o arquivo diretamente na pasta do projeto enquanto o bot estiver rodando**, pois isso pode causar erros de acesso.
+*   **Para visualizar os dados:**
+    1.  Copie o arquivo para outro local (ex: sua área de trabalho).
+    2.  Abra a cópia.
 
-pm2 start dist/index.js --name "meuProjeto"
+## 🔄 Passo 6: Atualização do Projeto
 
-Agora seu projeto está configurado e pronto para rodar! 🚀
+1.  Pare a execução do projeto antes de atualizar:
+
+    ```bash
+    pm2 stop botPraticc
+    ```
+
+2.  Atualize o repositório:
+
+    ```bash
+    git pull origin main
+    npm install
+    npm run build
+    ```
+
+3.  Reinicie o projeto:
+
+    ```bash
+    pm2 start index.js --name "botPraticc"
+    ```
+
+---
+
+Agora seu projeto está configurado e pronto para ser utilizado! 🎉

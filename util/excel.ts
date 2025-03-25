@@ -12,7 +12,7 @@ function loadWorkbook(): xlsx.WorkBook {
     } else {
         workbook = xlsx.utils.book_new();
         const worksheet = xlsx.utils.aoa_to_sheet([
-            ["Numero", "Setor", "Data", "Dia Semana", "Resposta", "Tempo"]
+            ["Numero", "Setor", "Data", "Dia Semana", "Resposta", "Tempo", "Nota"]
         ]);
         xlsx.utils.book_append_sheet(workbook, worksheet, "Respostas");
         xlsx.writeFile(workbook, excelFilePath);

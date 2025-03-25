@@ -32,10 +32,10 @@ export function registerUserInteraction(user: string): void {
 }
 
 // Atualiza o rastreamento de um usuário
-export function updateMessageTracking(user: string, option: string, replyTime: string, rowNumber: number): void {
+export function updateMessageTracking(user: string, option: string | null, replyTime: string | null, rowNumber: number | null, replyTimeCalculated: boolean = false, nota: boolean = false): void {
     try {
-        const query = db.prepare("UPDATE tracking SET option = ?, replyTime = ?, rowNumber = ? WHERE user = ?");
-        query.run(option, replyTime, rowNumber, user);
+        const query = db.prepare("UPDATE tracking SET option = ?, replyTime = ?, rowNumber = ?, replyTimeCalculated = ?, nota = ? WHERE user = ?");
+        query.run(option, replyTime, rowNumber, replyTimeCalculated, nota, user);
     } catch (error) {
         logError(error, "Erro ao atualizar rastreamento de mensagem");
     }

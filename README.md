@@ -1,6 +1,6 @@
-# 🤖 botPraticc - Guia de Instalação e Uso (Windows) 🚀
+# 🤖 botPratyc - Guia de Instalação e Uso (Windows) 🚀
 
-Este guia detalha como configurar e executar o projeto `botPraticc` no Windows, utilizando Node.js, npm e PM2 para gerenciamento.
+Este guia detalha como configurar e executar o projeto `botPratyc` no Windows, utilizando Node.js, npm e PM2 para gerenciamento.
 
 ## 📌 Pré-requisitos
 
@@ -28,8 +28,8 @@ Antes de começar, certifique-se de ter os seguintes itens instalados:
 3.  Clone o repositório:
 
     ```bash
-    git clone https://github.com/EduHort/botPraticc.git
-    cd botPraticc
+    git clone https://github.com/EduHort/botPratyc.git
+    cd botPratyc
     ```
 
 4.  Instale as dependências do projeto:
@@ -50,7 +50,7 @@ O PM2 é um gerenciador de processos que mantém seu bot rodando em segundo plan
 
 2.  **Comandos Essenciais do PM2:**
 
-    *   `pm2 start <arquivo.js> --name "nomeDoProjeto"`: Inicia o projeto com um nome personalizado (ex: `pm2 start index.js --name "botPraticc"`).
+    *   `pm2 start <arquivo.js> --name "nomeDoProjeto"`: Inicia o projeto com um nome personalizado (ex: `pm2 start index.js --name "botPratyc"`).
     *   `pm2 stop nomeDoProjeto`: Para a instância do projeto.
     *   `pm2 restart nomeDoProjeto`: Reinicia a instância do projeto.
     *   `pm2 logs nomeDoProjeto`: Exibe os logs do projeto para monitoramento e debugging.
@@ -76,8 +76,8 @@ O PM2 é um gerenciador de processos que mantém seu bot rodando em segundo plan
 2.  Inicie o projeto com PM2:
 
     ```bash
-    pm2 start index.js --name "botPraticc"
-    pm2 logs botPraticc
+    pm2 start index.js --name "botPratyc"
+    pm2 logs botPratyc
     ```
 
 3.  **Autenticação do WhatsApp:** Verifique o QR code no pm2 logs para autenticar o WhatsApp. Se a autenticação falhar:
@@ -85,7 +85,7 @@ O PM2 é um gerenciador de processos que mantém seu bot rodando em segundo plan
     *   Exclua as pastas de cache e autenticação:
 
         ```bash
-        pm2 stop botPraticc
+        pm2 stop botPratyc
         rmdir .wwebjs_cache /s /q
         rmdir .wwebjs_auth /s /q
         ```
@@ -94,8 +94,8 @@ O PM2 é um gerenciador de processos que mantém seu bot rodando em segundo plan
 
         ```bash
         npm run build
-        pm2 start index.js --name "botPraticc"
-        pm2 logs botPraticc
+        pm2 start index.js --name "botPratyc"
+        pm2 logs botPratyc
         ```
 
 ## 📊 Passo 5: Manipulação do Arquivo Excel
@@ -112,7 +112,7 @@ O projeto gera um arquivo Excel (geralmente chamado `respostas.xlsx`) na raiz da
 1.  Pare a execução do projeto antes de atualizar:
 
     ```bash
-    pm2 stop botPraticc
+    pm2 stop botPratyc
     ```
 
 2.  Atualize o repositório:
@@ -126,7 +126,7 @@ O projeto gera um arquivo Excel (geralmente chamado `respostas.xlsx`) na raiz da
 3.  Reinicie o projeto:
 
     ```bash
-    pm2 start index.js --name "botPraticc"
+    pm2 start index.js --name "botPratyc"
     ```
 
 ---

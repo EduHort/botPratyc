@@ -18,10 +18,10 @@ const optionsMap: { [key: string]: string } = {
     '10': 'Cancelar'
 };
 
-client.on('message', async (message) => {
+client.on('message_create', async (message) => {
     try {
         // Usar .includes para evitar espaços na mensagem
-        if (message.fromMe && message.body.includes('')) {
+        if (message.fromMe && message.body.includes('!!!!! Colocar a mensagem aqui !!!!!!')) {
             // Checa para mensagens em massa. Não fazer nada nesse caso.
         }
         else {
@@ -34,7 +34,7 @@ client.on('message', async (message) => {
                 userData = findUserTrackingData(message.from);
             }
             // Verifica se a mensagem indica um novo usuário que precisa ser registrado
-            if (message.body.includes('Digite o número do setor desejado') && message.fromMe && !userData) {
+            if (message.body.includes('Como podemos te ajudar hoje?') && message.fromMe && !userData) {
                 // Registra o novo usuário no banco de dados
                 registerUserInteraction(message.to);
             }
@@ -67,7 +67,7 @@ client.on('message', async (message) => {
                     // Verifica se a mensagem é do atendente e se o usuário está sendo atendido
                     if (message.fromMe && !userData.replyTimeCalculated) {
                         // Verifica se a mensagem do atendente NÃO contém frases específicas
-                        if (!message.body.includes('estou encaminhando para atendimento') || !message.body.includes('Estamos fechados no momento') || !message.body.includes('Nossos atendentes estão em horário de almoço')) {
+                        if (!message.body.includes('estou encaminhando para atendimento') && !message.body.includes('Estamos fechados no momento') && !message.body.includes('Nossos atendentes estão em horário de almoço')) {
                             const replyTime = new Date(userData.replyTime);
                             const atendenteReplyTime = new Date();
                             atendenteReplyTime.setHours(atendenteReplyTime.getHours() - 3);   // Ajusta o fuso horário para o Brasil
@@ -79,7 +79,7 @@ client.on('message', async (message) => {
                             addRowToExcel([null, null, null, null, atendenteReplyTime.toLocaleString('pt-BR'), timeDiff.toFixed(2)], true, userData.rowNumber);
 
                             // replyTimeCalculated = true, para evitar que o tempo de resposta seja calculado novamente
-                            updateMessageTracking(userData.user, userData.option, userData.replyTime, userData.rowNumber, true);
+                            updateMessageTracking(userData.user, userData.option, userData.replyTime, userData.rowNumber, 1);
                         }
                     }
                     // Verifica se o usuário está sendo redirecionado
@@ -103,7 +103,7 @@ client.on('message', async (message) => {
                     // Verifica se é hora de dar nota
                     else if (message.fromMe && userData.replyTimeCalculated && message.body.includes('De 1 a 5, como você avalia nosso') && !userData.nota) {
                         // nota = true
-                        updateMessageTracking(userData.user, userData.option, userData.replyTime, userData.rowNumber, true, true);
+                        updateMessageTracking(userData.user, userData.option, userData.replyTime, userData.rowNumber, 1, 1);
                     }
                     else if (!message.fromMe && userData.nota) {
                         // Verifica se a mensagem do cliente contém uma nota (1-5)

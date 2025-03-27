@@ -3,6 +3,6 @@ export interface TrackingData {
     option?: string;
     replyTime?: string;
     rowNumber?: number;
-    replyTimeCalculated?: boolean;
-    nota?: boolean;
+    replyTimeCalculated?: number;
+    nota?: number;
 }

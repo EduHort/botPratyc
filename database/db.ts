@@ -14,7 +14,9 @@ try {
             user TEXT NOT NULL,
             option TEXT,
             replyTime TEXT,
-            rowNumber INTEGER
+            rowNumber INTEGER,
+            replyTimeCalculated INTEGER,
+            nota INTEGER
         )
     `).run();
 } catch (error) {
@@ -32,10 +34,10 @@ export function registerUserInteraction(user: string): void {
 }
 
 // Atualiza o rastreamento de um usuário
-export function updateMessageTracking(user: string, option: string | null, replyTime: string | null, rowNumber: number | null, replyTimeCalculated: boolean = false, nota: boolean = false): void {
+export function updateMessageTracking(user: string, option: string | null, replyTime: string | null, rowNumber: number | null, replyTimeCalculated: number = 0, nota: number = 0): void {
     try {
         const query = db.prepare("UPDATE tracking SET option = ?, replyTime = ?, rowNumber = ?, replyTimeCalculated = ?, nota = ? WHERE user = ?");
-        query.run(option, replyTime, rowNumber, replyTimeCalculated, nota, user);
+        query.run(option ?? null, replyTime ?? null, rowNumber ?? null, replyTimeCalculated ? 1 : 0, nota ? 1 : 0, user);
     } catch (error) {
         logError(error, "Erro ao atualizar rastreamento de mensagem");
     }

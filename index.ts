@@ -1,5 +1,4 @@
 import { clearUserTrackingData, findUserTrackingData, registerUserInteraction, updateMessageTracking } from "./database/db";
-import { TrackingData } from "./types/types";
 import client from "./util/WhatsAppClient";
 import { logError } from "./util/errors";
 import { addRowToExcel } from "./util/excel";
@@ -75,41 +74,44 @@ client.on('message_create', async (message) => {
         }
         else {  // Mensagem do cliente
             const userData = findUserTrackingData(message.from);
-            // Verifica se o usuário existe e ainda não escolheu uma opção
-            if (userData && !userData.option) {
-                if (/^[1-8]$/.test(message.body.trim())) {
-                    const option = optionsMap[message.body.trim()];     // Obtém a opção escolhida
-
-                    const currentTime = new Date();
-                    const weekday = currentTime.toLocaleDateString('pt-BR', { weekday: 'short' }).toUpperCase().slice(0, 3);    // Obtém o dia da semana
-
-                    // Adiciona os dados do cliente na planilha Excel e retorna o número da linha
-                    const rowNumber = addRowToExcel([userData.user.replace('@c.us', ''), option, currentTime.toLocaleString('pt-BR'), weekday]);
-
-                    if (rowNumber) {
-                        // Atualiza os dados do usuário no banco de dados com a opção, tempo e número da linha
-                        updateMessageTracking(userData.user, option, currentTime.toISOString(), rowNumber);
+            // Verifica se o usuário existe
+            if (userData) {
+                // Verifica se o usuário ainda não escolheu uma opção
+                if (!userData.option) {
+                    if (/^[1-8]$/.test(message.body.trim())) {
+                        const option = optionsMap[message.body.trim()];     // Obtém a opção escolhida
+    
+                        const currentTime = new Date();
+                        const weekday = currentTime.toLocaleDateString('pt-BR', { weekday: 'short' }).toUpperCase().slice(0, 3);    // Obtém o dia da semana
+    
+                        // Adiciona os dados do cliente na planilha Excel e retorna o número da linha
+                        const rowNumber = addRowToExcel([userData.user.replace('@c.us', ''), option, currentTime.toLocaleString('pt-BR'), weekday]);
+    
+                        if (rowNumber) {
+                            // Atualiza os dados do usuário no banco de dados com a opção, tempo e número da linha
+                            updateMessageTracking(userData.user, option, currentTime.toISOString(), rowNumber);
+                        }
+                    }
+                    // Verifica se o cliente digitou '9' ou '10' para excluir o cadastro
+                    else if (/^(9|10)$/.test(message.body.trim())) {
+                        clearUserTrackingData(userData.user);
+                    }
+                    else {
+                        return;
                     }
                 }
-                // Verifica se o cliente digitou '9' ou '10' para excluir o cadastro
-                else if (/^(9|10)$/.test(message.body.trim())) {
+                else if (userData.nota) {
+                    // Adiciona a nota no cliente. 1 = Boa e 2 = Ruim
+                    if (message.body.trim() === '1') {
+                        addRowToExcel([null, null, null, null, null, null, 'Boa'], true, userData.rowNumber);
+                    } else if (message.body.trim() === '2') {
+                        addRowToExcel([null, null, null, null, null, null, 'Ruim'], true, userData.rowNumber);
+                    } else {
+                        return;
+                    }
+                    // Limpa os dados de rastreamento do usuário no banco de dados
                     clearUserTrackingData(userData.user);
                 }
-                else {
-                    return;
-                }
-            }
-            else if (userData && userData.nota) {
-                // Adiciona a nota no cliente. 1 = Boa e 2 = Ruim
-                if (message.body.trim() === '1') {
-                    addRowToExcel([null, null, null, null, null, null, 'Boa'], true, userData.rowNumber);
-                } else if (message.body.trim() === '2') {
-                    addRowToExcel([null, null, null, null, null, null, 'Ruim'], true, userData.rowNumber);
-                } else {
-                    return;
-                }
-                // Limpa os dados de rastreamento do usuário no banco de dados
-                clearUserTrackingData(userData.user);
             }
         }
     }

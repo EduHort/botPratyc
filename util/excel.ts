@@ -1,7 +1,7 @@
 import fs from "fs";
 import * as xlsx from "xlsx";
 
-const excelFilePath = "./respostas.xlsx";
+const excelFilePath = "./relatorio_botPratyc.xlsx";
 
 // Função para carregar ou criar o arquivo Excel
 function loadWorkbook(): xlsx.WorkBook {
